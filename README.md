@@ -3,8 +3,8 @@ Example showing how to access snowflake using go. Runs a simple query and logs
 a success message. The example supports username/password or key pair authentication.
   
 You can modify the query variable in `main.go` to run different queries, just
-don't forget to change `SNOWFLAKE.DATABASE` and `SNOWFLAKE.SCHEMA` when changing
-the query if necessary.
+don't forget to change `SNOWFLAKE.DATABASE` and `SNOWFLAKE.SCHEMA` in the `.env`
+files when changing the query if necessary.
 
 ## Usage
 
