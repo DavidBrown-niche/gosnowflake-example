@@ -1,6 +1,6 @@
 # gosnowflake-example
 Example showing how to access snowflake using go. Runs a simple query and logs
-out a success message. The example supports username/password or key pair authentication.
+a success message. The example supports username/password or key pair authentication.
 
 ## Usage
 
@@ -30,7 +30,7 @@ password var empty).
 
 This command will set your env variables and run the example:
 ```
-. .env && go run 
+. .env && go run .
 ```
 
 Depending on local DNS settings, you may see the below error message multiple
