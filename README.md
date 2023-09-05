@@ -53,7 +53,7 @@ using password auth leave the private_key/passcode vars empty, likewise if using
 key pair auth leave the password var empty).
 
 Build the example:
-```console
+```
 make build-gosnowflake-example
 ```
 
