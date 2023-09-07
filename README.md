@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [gosnowflake-example](#gosnowflake-example)
+  - [Usage](#usage)
+  - [Running Locally](#running-locally)
+  - [Running in Docker](#running-in-docker)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # gosnowflake-example
 Example showing how to access snowflake using go. Runs a simple query and logs
 a success message. The example supports username/password or key pair authentication.
@@ -11,13 +22,13 @@ files when changing the query if necessary.
 ```
 Usage of gosnowflake-example:
   -snowflake.account string
-        Account name for snowflake
+        Account name for snowflake. Account name is not the username, see https://docs.snowflake.com/en/user-guide/admin-account-identifier for more details
   -snowflake.database string
         Database name for snowflake
   -snowflake.password string
-        Password for snowflake
+        Password for snowflake. Cannot be used in conjunction with snowflake.private.key
   -snowflake.private.key string
-        Private key used to authenticate with snowflake, pkcs8 in PEM format
+        Private key used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password
   -snowflake.private.key.passcode string
         Passcode for encrypted private key (not necessary if key is not encrypted)
   -snowflake.schema string

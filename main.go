@@ -17,12 +17,12 @@ import (
 
 func main() {
 	var (
-		snowflakeAccount            = flag.String("snowflake.account", "", "Account name for snowflake")
+		snowflakeAccount            = flag.String("snowflake.account", "", "Account name for snowflake. Account name is not the username, see https://docs.snowflake.com/en/user-guide/admin-account-identifier for more details")
 		snowflakeDatabase           = flag.String("snowflake.database", "", "Database name for snowflake")
 		snowflakeSchema             = flag.String("snowflake.schema", "", "Schema name for snowflake")
 		snowflakeUser               = flag.String("snowflake.user", "", "Username for snowflake")
-		snowflakePassword           = flag.String("snowflake.password", "", "Password for snowflake")
-		snowflakePrivateKey         = flag.String("snowflake.private.key", "", "Private key used to authenticate with snowflake, pkcs8 in PEM format")
+		snowflakePassword           = flag.String("snowflake.password", "", "Password for snowflake. Cannot be used in conjunction with snowflake.private.key")
+		snowflakePrivateKey         = flag.String("snowflake.private.key", "", "Private key used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password")
 		snowflakePrivateKeyPasscode = flag.String("snowflake.private.key.passcode", "", "Passcode for encrypted private key (not necessary if key is not encrypted)")
 	)
 
@@ -61,6 +61,9 @@ func main() {
 	defer cancel()
 
 	// need to convert private key to correct format if provided
+	// Unfortunately need to use a third party package for this
+	// because the std crypto package does not support decrypting pkcs8
+	// keys
 	var (
 		rsaKey *rsa.PrivateKey
 		ok     bool
