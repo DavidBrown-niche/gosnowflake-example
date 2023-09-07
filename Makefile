@@ -12,6 +12,6 @@ gosnowflake-example:
 	docker run --rm \
 		--dns=8.8.8.8 \
 		--env-file ./.env.docker \
-		--name=go-snowflake-example \
+		--name=gosnowflake-example \
 		--network="host" \
 		$(USER)/gosnowflake-example:latest $(ARGS)

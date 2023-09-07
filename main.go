@@ -3,9 +3,7 @@ package main
 import (
 	"context"
 	"crypto/rsa"
-	"crypto/x509"
 	"database/sql"
-	"encoding/pem"
 	"flag"
 	"log"
 	"os"
@@ -63,35 +61,25 @@ func main() {
 	defer cancel()
 
 	// need to convert private key to correct format if provided
-	var rsaKey *rsa.PrivateKey
+	var (
+		rsaKey *rsa.PrivateKey
+		ok     bool
+	)
 	if *snowflakePrivateKey != "" {
-		block, _ := pem.Decode([]byte(*snowflakePrivateKey))
-		if block == nil {
-			logger.Fatal("Could not decode pem block, is key in pem format?")
-		}
-
-		// Unencrypt if a passcode is provided otherwise assume the passed in
-		// key is unencrypted
-		var key []byte
-		var err error
-		if *snowflakePrivateKeyPasscode != "" {
-			// Unfortunately need to use a third party package for decrypting
-			// because the std crypto package does not support decrypting pkcs8
-			// keys
-			key, err = pemutil.DecryptPKCS8PrivateKey(block.Bytes, []byte(*snowflakePrivateKeyPasscode))
-			if err != nil {
-				logger.Fatal("Error decrypting key", zap.Error(err))
-			}
-		} else {
-			key = block.Bytes
-		}
-
-		parsedKey, err := x509.ParsePKCS8PrivateKey(key)
+		key, err := pemutil.Parse(
+			[]byte(*snowflakePrivateKey),
+			// Can pass the passcode even if it's not set (indicating the key is
+			// not encrypted), decryption will just be skipped in that case
+			pemutil.WithPassword([]byte(*snowflakePrivateKeyPasscode)),
+		)
 		if err != nil {
-			logger.Fatal("Error converting key", zap.Error(err))
+			logger.Fatal("Failed parsing private key!", zap.Error(err))
 		}
 
-		rsaKey = parsedKey.(*rsa.PrivateKey)
+		rsaKey, ok = key.(*rsa.PrivateKey)
+		if !ok {
+			logger.Fatal("Type assertion to *rsa.PrivateKey failed!")
+		}
 	}
 
 	cfg := gosnowflake.Config{

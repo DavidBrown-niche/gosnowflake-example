@@ -28,9 +28,9 @@ Usage of gosnowflake-example:
 
 ## Running Locally
 
-Populate the `.env` file with your credentials, (if using password auth leave
-the private_key/passcode vars empty, likewise if using key pair auth leave the
-password var empty). 
+Create a `.env` file similar to `.env.example` and populate it with your
+credentials, (if using password auth leave the private_key/passcode vars empty,
+likewise if using key pair auth leave the password var empty).
 
 This command will set your env variables and run the example:
 ```
@@ -52,9 +52,10 @@ Indicating that you've successfully queried snowflake!
 
 ## Running in Docker
 
-Similar to above, populate the `.env.docker` file with your credentials, (if
-using password auth leave the private_key/passcode vars empty, likewise if using
-key pair auth leave the password var empty).
+Similar to above, create a `.env.docker` similar to `.env.docker.example` and
+populate it with your credentials. Note that due to limitations with the docker
+--env-file flag (specifically a lack of support for quoted and multiline
+variables), you cannot define a private key in the `.env.docker` file.
 
 Build the example:
 ```
