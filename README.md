@@ -26,9 +26,9 @@ Usage of gosnowflake-example:
   -snowflake.database string
         Database name for snowflake
   -snowflake.password string
-        Password for snowflake. Cannot be used in conjunction with snowflake.private.key
-  -snowflake.private.key string
-        Private key used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password
+        Password for snowflake. Cannot be used in conjunction with snowflake.private.key.file
+  -snowflake.private.key.file string
+        Location of private key file used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password
   -snowflake.private.key.passcode string
         Passcode for encrypted private key (not necessary if key is not encrypted)
   -snowflake.schema string
@@ -40,8 +40,11 @@ Usage of gosnowflake-example:
 ## Running Locally
 
 Create a `.env` file similar to `.env.example` and populate it with your
-credentials, (if using password auth leave the private_key/passcode vars empty,
-likewise if using key pair auth leave the password var empty).
+credentials, (if using password auth leave the private_key_file/passcode vars empty,
+likewise if using key pair auth leave the password var empty). 
+
+If using private key, save your private key file in the approprate location. I
+used `private_key.pem`, but it doesn't really matter.
 
 This command will set your env variables and run the example:
 ```
@@ -64,9 +67,11 @@ Indicating that you've successfully queried snowflake!
 ## Running in Docker
 
 Similar to above, create a `.env.docker` similar to `.env.docker.example` and
-populate it with your credentials. Note that due to limitations with the docker
---env-file flag (specifically a lack of support for quoted and multiline
-variables), you cannot define a private key in the `.env.docker` file.
+populate it with your credentials. 
+
+If using private key, save your private key file in the approprate location. I
+used `private_key.pem`, but it doesn't really matter. If using a different
+location, you'll need to modify the Makefile appropriately with the correct -v flag.
 
 Build the example:
 ```

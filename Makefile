@@ -12,6 +12,7 @@ gosnowflake-example:
 	docker run --rm \
 		--dns=8.8.8.8 \
 		--env-file ./.env.docker \
+		-v ${CURDIR}/private_key.pem:/private_key.pem \
 		--name=gosnowflake-example \
 		--network="host" \
 		$(USER)/gosnowflake-example:latest $(ARGS)

@@ -23,3 +23,6 @@ go.work
 # .env files
 .env
 .env.docker
+
+# private key
+private_key.pem

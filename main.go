@@ -21,8 +21,8 @@ func main() {
 		snowflakeDatabase           = flag.String("snowflake.database", "", "Database name for snowflake")
 		snowflakeSchema             = flag.String("snowflake.schema", "", "Schema name for snowflake")
 		snowflakeUser               = flag.String("snowflake.user", "", "Username for snowflake")
-		snowflakePassword           = flag.String("snowflake.password", "", "Password for snowflake. Cannot be used in conjunction with snowflake.private.key")
-		snowflakePrivateKey         = flag.String("snowflake.private.key", "", "Private key used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password")
+		snowflakePassword           = flag.String("snowflake.password", "", "Password for snowflake. Cannot be used in conjunction with snowflake.private.key.file")
+		snowflakePrivateKeyFile     = flag.String("snowflake.private.key.file", "", "Location of private key file used to authenticate with snowflake, pkcs8 in PEM format. Cannot be used in conjunction with snowflake.password")
 		snowflakePrivateKeyPasscode = flag.String("snowflake.private.key.passcode", "", "Passcode for encrypted private key (not necessary if key is not encrypted)")
 	)
 
@@ -48,11 +48,11 @@ func main() {
 	if *snowflakeUser == "" {
 		logger.Fatal("Missing required flag snowflake.user")
 	}
-	if *snowflakePassword == "" && *snowflakePrivateKey == "" {
-		logger.Fatal("Must provide exactly one of: snowflake.password OR snowflake.private.key, neither provided")
+	if *snowflakePassword == "" && *snowflakePrivateKeyFile == "" {
+		logger.Fatal("Must provide exactly one of: snowflake.password OR snowflake.private.key.file, neither provided")
 	}
-	if *snowflakePassword != "" && *snowflakePrivateKey != "" {
-		logger.Fatal("Must provide exactly one of: snowflake.password OR snowflake.private.key, both provided")
+	if *snowflakePassword != "" && *snowflakePrivateKeyFile != "" {
+		logger.Fatal("Must provide exactly one of: snowflake.password OR snowflake.private.key.file, both provided")
 	}
 
 	// Create context that's cancelled when the program receives a SIGINT
@@ -68,9 +68,9 @@ func main() {
 		rsaKey *rsa.PrivateKey
 		ok     bool
 	)
-	if *snowflakePrivateKey != "" {
-		key, err := pemutil.Parse(
-			[]byte(*snowflakePrivateKey),
+	if *snowflakePrivateKeyFile != "" {
+		key, err := pemutil.Read(
+			*snowflakePrivateKeyFile,
 			// Can pass the passcode even if it's not set (indicating the key is
 			// not encrypted), decryption will just be skipped in that case
 			pemutil.WithPassword([]byte(*snowflakePrivateKeyPasscode)),
