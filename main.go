@@ -104,7 +104,6 @@ func main() {
 	if err != nil {
 		logger.Fatal("Failed to create DSN from config",
 			zap.Error(err),
-			zap.Any("config", cfg),
 		)
 	}
 
